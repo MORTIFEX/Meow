@@ -1,0 +1,22 @@
+{
+  "summary": "First-finish testing of BENOTEK-BAU Kft. Hungarian site. Backend (GET /api/config, POST /api/contact valid+invalid, GET /api/contact/submissions) all pass. Frontend E2E: Home loads, nav works, services calculator returns correct totals for 50 m² (175 000 Ft) and preset 100 (350 000 Ft), CTA prefills sqm on contact page, contact form submits successfully with success state + toast and email_sent=true (Resend integration working).",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "GET /api/config -> 200 with company, email info.benotekbau@gmail.com, phone +36 30 088 1236, price_per_sqm=3500",
+    "POST /api/contact valid payload -> 200, total_price=50*3500=175000, email_sent=true",
+    "POST /api/contact invalid payload (empty name, bad email, negative sqm) -> 422 with 3 validation errors",
+    "GET /api/contact/submissions?limit=3 -> 200 returns sorted list",
+    "Home page (/) loads with header/nav",
+    "Nav links to /szolgaltatasok and /kapcsolat function",
+    "Services calculator: input 50 -> 175 000 Ft; preset 100 -> 350 000 Ft",
+    "calc-cta navigates to /kapcsolat with sqm prefilled (100)",
+    "Contact form submission shows contact-success state and success toast (Hungarian: 'Köszönjük! Hamarosan jelentkezünk.')",
+    "Resend email delivery confirmed via email_sent=true response"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true,
+  "notes": "Page <title> is still default 'Emergent | Fullstack App' (low priority cosmetic — main agent may want to update public/index.html for Hungarian branding, but not blocking)."
+}
