@@ -18,21 +18,21 @@ export default function Header() {
       className="sticky top-0 z-50 border-b border-border bg-white/85 backdrop-blur-xl"
       data-testid="site-header"
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
-        <div className="flex h-20 items-center justify-between">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-12 lg:px-16">
+        <div className="flex h-16 sm:h-20 items-center justify-between gap-3">
           {/* Logo */}
           <Link
             to="/"
-            className="group flex items-center gap-3"
+            className="group flex items-center gap-2 sm:gap-3 min-w-0"
             data-testid="logo-link"
             onClick={() => setOpen(false)}
           >
-            <Logo size={44} className="shrink-0 group-hover:rotate-3 transition-transform duration-300" />
-            <div className="leading-none">
-              <div className="font-display text-lg font-extrabold tracking-tight">
+            <Logo size={40} className="shrink-0 group-hover:rotate-3 transition-transform duration-300" />
+            <div className="leading-none min-w-0">
+              <div className="font-display text-base sm:text-lg font-extrabold tracking-tight truncate">
                 BENOTEK-BAU
               </div>
-              <div className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mt-1">
+              <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-muted-foreground mt-1 truncate">
                 Kft. · Gépi vakolás
               </div>
             </div>

@@ -186,7 +186,7 @@ export default function Services() {
           <div className="text-xs uppercase tracking-[0.3em] text-primary font-semibold mb-6">
             Szolgáltatások
           </div>
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95] max-w-4xl">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95] max-w-4xl">
             Cementes gépi<br />
             <span className="text-primary">vakolás profi szinten.</span>
           </h1>
@@ -309,35 +309,35 @@ export default function Services() {
               </div>
 
               {/* Live Summary */}
-              <div className="mt-10 bg-white text-foreground p-6 border-l-4 border-primary" data-testid="calc-summary-card">
+              <div className="mt-10 bg-white text-foreground p-5 sm:p-6 border-l-4 border-primary" data-testid="calc-summary-card">
                 <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-3">
                   Becsült teljes ár
                 </div>
                 <div
-                  className="font-display text-4xl lg:text-5xl font-extrabold text-primary leading-none"
+                  className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary leading-tight break-words"
                   data-testid="calc-total-price"
                 >
                   {formatRange(calc.totalMin, calc.totalMax)}
                 </div>
 
                 <div className="mt-6 space-y-2 text-sm">
-                  <div className="flex justify-between items-baseline">
+                  <div className="flex justify-between items-baseline gap-2 flex-wrap">
                     <span className="text-muted-foreground">Munkadíj{calc.appliedModifiers.length > 0 ? " (felárakkal)" : ""}</span>
-                    <span className="font-semibold font-mono-alt">{formatRange(calc.munkadijAdjMin, calc.munkadijAdjMax)}</span>
+                    <span className="font-semibold font-mono-alt text-right">{formatRange(calc.munkadijAdjMin, calc.munkadijAdjMax)}</span>
                   </div>
                   {calc.appliedModifiers.length > 0 && (
-                    <div className="flex justify-between items-baseline text-xs text-muted-foreground pl-2">
+                    <div className="flex justify-between items-baseline gap-2 flex-wrap text-xs text-muted-foreground pl-2">
                       <span>↳ alap munkadíj</span>
-                      <span className="font-mono-alt">{formatRange(calc.munkadijMin, calc.munkadijMax)}</span>
+                      <span className="font-mono-alt text-right">{formatRange(calc.munkadijMin, calc.munkadijMax)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between items-baseline">
+                  <div className="flex justify-between items-baseline gap-2 flex-wrap">
                     <span className="text-muted-foreground">Pótmunkák</span>
-                    <span className="font-semibold font-mono-alt">{formatRange(calc.extrasMin, calc.extrasMax)}</span>
+                    <span className="font-semibold font-mono-alt text-right">{formatRange(calc.extrasMin, calc.extrasMax)}</span>
                   </div>
-                  <div className="flex justify-between items-baseline">
+                  <div className="flex justify-between items-baseline gap-2 flex-wrap">
                     <span className="text-muted-foreground">Egyszeri tételek</span>
-                    <span className="font-semibold font-mono-alt">{formatRange(calc.fixedMin, calc.fixedMax)}</span>
+                    <span className="font-semibold font-mono-alt text-right">{formatRange(calc.fixedMin, calc.fixedMax)}</span>
                   </div>
                 </div>
 
@@ -361,7 +361,7 @@ export default function Services() {
             </div>
 
             <div className="lg:col-span-8">
-              <div className="bg-white text-foreground p-6 lg:p-10" data-testid="calculator-card">
+              <div className="bg-white text-foreground p-4 sm:p-6 lg:p-10" data-testid="calculator-card">
                 <div className="flex items-center gap-3 mb-8">
                   <Calculator className="h-6 w-6 text-primary" />
                   <div className="font-mono-alt text-xs uppercase tracking-[0.3em] text-muted-foreground">
@@ -473,10 +473,10 @@ function PriceGroup({ icon, title, subtitle, children, last }) {
   return (
     <div className={last ? "" : "mb-10 pb-10 border-b border-border"}>
       <div className="flex items-center gap-3 mb-5">
-        <div className="flex h-8 w-8 items-center justify-center bg-primary text-primary-foreground">
+        <div className="flex h-8 w-8 items-center justify-center bg-primary text-primary-foreground shrink-0">
           {icon}
         </div>
-        <div>
+        <div className="min-w-0">
           <div className="font-display font-bold text-base">{title}</div>
           <div className="text-xs text-muted-foreground">{subtitle}</div>
         </div>
@@ -486,23 +486,33 @@ function PriceGroup({ icon, title, subtitle, children, last }) {
   );
 }
 
-function RowShell({ checked, onCheck, id, children }) {
+function RowShell({ checked, onCheck, id, primary, controls, amount }) {
   return (
     <div
-      className={`flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 py-3 border-b border-border last:border-b-0 transition-colors ${
+      className={`flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 px-3 sm:px-4 py-3 border-b border-border last:border-b-0 transition-colors ${
         checked ? "bg-orange-50" : "bg-white hover:bg-muted/40"
       }`}
       data-testid={`row-${id}`}
     >
-      <label className="flex items-center gap-3 flex-1 cursor-pointer select-none">
+      <label className="flex items-start sm:items-center gap-3 flex-1 cursor-pointer select-none min-w-0">
         <Checkbox
           checked={checked}
           onCheckedChange={onCheck}
           data-testid={`check-${id}`}
-          className="rounded-none border-2 border-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+          className="rounded-none border-2 border-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary mt-0.5 sm:mt-0 shrink-0"
         />
-        {children}
+        <div className="flex-1 min-w-0">{primary}</div>
       </label>
+
+      {controls && (
+        <div className="flex items-center gap-2 shrink-0 pl-8 sm:pl-0" onClick={(e) => e.preventDefault()}>
+          {controls}
+        </div>
+      )}
+
+      <div className="text-left sm:text-right font-mono-alt text-sm tabular-nums sm:w-44 shrink-0 pl-8 sm:pl-0" data-testid={`line-${id}`}>
+        {amount}
+      </div>
     </div>
   );
 }
@@ -514,103 +524,114 @@ function RateRow({ service, state, onCheck, onQty }) {
   const lineMax = qty * service.max;
 
   return (
-    <RowShell checked={checked} onCheck={onCheck} id={service.id}>
-      <div className="flex-1 min-w-0">
-        <div className="font-semibold text-sm leading-snug">{service.name}</div>
-        <div className="text-xs text-muted-foreground mt-0.5 font-mono-alt">
-          {service.min === service.max
-            ? `${service.min} Ft/${service.unit}`
-            : `${service.min}–${service.max} Ft/${service.unit}`}
-        </div>
-      </div>
-
-      {checked && (
-        <div className="flex items-center gap-2 shrink-0" onClick={(e) => e.preventDefault()}>
-          <Input
-            type="number"
-            min="0"
-            step={service.unit === "m²" ? 1 : 1}
-            value={state.qty}
-            onChange={(e) => onQty(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            data-testid={`qty-${service.id}`}
-            className="rounded-none h-10 w-24 text-base font-display font-bold focus-visible:ring-primary focus-visible:ring-offset-0"
-          />
-          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground w-8">{service.unit}</span>
-        </div>
-      )}
-
-      <div
-        className={`shrink-0 text-right font-mono-alt text-sm tabular-nums w-full sm:w-44 ${
-          checked && qty > 0 ? "text-primary font-bold" : "text-muted-foreground"
-        }`}
-        data-testid={`line-${service.id}`}
-      >
-        {checked && qty > 0
-          ? service.min === service.max
-            ? formatFt(lineMin)
-            : `${formatFt(lineMin)} – ${formatFt(lineMax)}`
-          : "—"}
-      </div>
-    </RowShell>
+    <RowShell
+      id={service.id}
+      checked={checked}
+      onCheck={onCheck}
+      primary={
+        <>
+          <div className="font-semibold text-sm leading-snug">{service.name}</div>
+          <div className="text-xs text-muted-foreground mt-0.5 font-mono-alt">
+            {service.min === service.max
+              ? `${service.min} Ft/${service.unit}`
+              : `${service.min}–${service.max} Ft/${service.unit}`}
+          </div>
+        </>
+      }
+      controls={
+        checked ? (
+          <>
+            <Input
+              type="number"
+              min="0"
+              step={1}
+              value={state.qty}
+              onChange={(e) => onQty(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              data-testid={`qty-${service.id}`}
+              className="rounded-none h-10 w-20 sm:w-24 text-base font-display font-bold focus-visible:ring-primary focus-visible:ring-offset-0"
+            />
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground w-8">{service.unit}</span>
+          </>
+        ) : null
+      }
+      amount={
+        <span className={checked && qty > 0 ? "text-primary font-bold" : "text-muted-foreground"}>
+          {checked && qty > 0
+            ? service.min === service.max
+              ? formatFt(lineMin)
+              : `${formatFt(lineMin)} – ${formatFt(lineMax)}`
+            : "—"}
+        </span>
+      }
+    />
   );
 }
 
 function CustomRow({ service, state, onCheck }) {
   const checked = !!state?.checked;
   return (
-    <RowShell checked={checked} onCheck={onCheck} id={service.id}>
-      <div className="flex-1 min-w-0">
-        <div className="font-semibold text-sm leading-snug">{service.name}</div>
-        <div className="text-xs text-muted-foreground mt-0.5">{service.note}</div>
-      </div>
-      <div className="shrink-0 text-right text-xs font-bold uppercase tracking-wider text-muted-foreground w-full sm:w-44">
-        Egyedi ár
-      </div>
-    </RowShell>
+    <RowShell
+      id={service.id}
+      checked={checked}
+      onCheck={onCheck}
+      primary={
+        <>
+          <div className="font-semibold text-sm leading-snug">{service.name}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{service.note}</div>
+        </>
+      }
+      amount={
+        <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          Egyedi ár
+        </span>
+      }
+    />
   );
 }
 
 function PercentRow({ service, state, onCheck }) {
   const checked = !!state?.checked;
   return (
-    <RowShell checked={checked} onCheck={onCheck} id={service.id}>
-      <div className="flex-1 min-w-0">
-        <div className="font-semibold text-sm leading-snug">{service.name}</div>
-        <div className="text-xs text-muted-foreground mt-0.5">
-          {service.description}
-        </div>
-      </div>
-      <div
-        className={`shrink-0 text-right font-mono-alt text-sm tabular-nums w-full sm:w-44 ${
-          checked ? "text-primary font-bold" : "text-muted-foreground"
-        }`}
-      >
-        +{service.min}–{service.max}%
-      </div>
-    </RowShell>
+    <RowShell
+      id={service.id}
+      checked={checked}
+      onCheck={onCheck}
+      primary={
+        <>
+          <div className="font-semibold text-sm leading-snug">{service.name}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{service.description}</div>
+        </>
+      }
+      amount={
+        <span className={checked ? "text-primary font-bold" : "text-muted-foreground"}>
+          +{service.min}–{service.max}%
+        </span>
+      }
+    />
   );
 }
 
 function FixedRow({ service, state, onCheck }) {
   const checked = !!state?.checked;
   return (
-    <RowShell checked={checked} onCheck={onCheck} id={service.id}>
-      <div className="flex-1 min-w-0">
-        <div className="font-semibold text-sm leading-snug">{service.name}</div>
-        <div className="text-xs text-muted-foreground mt-0.5">
-          {service.description}
-        </div>
-      </div>
-      <div
-        className={`shrink-0 text-right font-mono-alt text-sm tabular-nums w-full sm:w-44 ${
-          checked ? "text-primary font-bold" : "text-muted-foreground"
-        }`}
-      >
-        {service.min === service.max
-          ? formatFt(service.min)
-          : `${formatFt(service.min)} – ${formatFt(service.max)}`}
-      </div>
-    </RowShell>
+    <RowShell
+      id={service.id}
+      checked={checked}
+      onCheck={onCheck}
+      primary={
+        <>
+          <div className="font-semibold text-sm leading-snug">{service.name}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{service.description}</div>
+        </>
+      }
+      amount={
+        <span className={checked ? "text-primary font-bold" : "text-muted-foreground"}>
+          {service.min === service.max
+            ? formatFt(service.min)
+            : `${formatFt(service.min)} – ${formatFt(service.max)}`}
+        </span>
+      }
+    />
   );
 }

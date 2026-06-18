@@ -204,10 +204,98 @@ async def send_contact_email(submission: ContactSubmission) -> bool:
     }
     try:
         result = await asyncio.to_thread(resend.Emails.send, params)
-        logger.info(f"Resend email sent: {result}")
+        logger.info(f"Resend email sent (company): {result}")
         return True
     except Exception as e:
         logger.error(f"Failed to send contact email: {e}")
+        return False
+
+
+def build_customer_confirmation_html(payload: ContactSubmission) -> str:
+    sqm_fmt = f"{payload.square_meters:g}"
+    safe_message = (payload.message or "").replace("\n", "<br/>")
+    services_block = build_services_html(payload)
+    return f"""
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;padding:24px;font-family:Arial,sans-serif;color:#18181b;">
+      <tr><td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #d4d4d8;">
+          <tr><td style="background:#18181b;padding:24px 28px;">
+            <div style="color:#fafafa;font-size:11px;letter-spacing:3px;text-transform:uppercase;">BENOTEK-BAU Kft.</div>
+            <div style="color:#f97316;font-size:24px;font-weight:800;margin-top:8px;line-height:1.2;">Köszönjük megkeresését!</div>
+          </td></tr>
+          <tr><td style="padding:28px;">
+            <p style="margin:0 0 12px 0;font-size:16px;line-height:1.6;">Kedves <strong>{payload.name}</strong>,</p>
+            <p style="margin:0 0 18px 0;font-size:14px;line-height:1.7;color:#3f3f46;">
+              Köszönjük, hogy felvette velünk a kapcsolatot! Az alábbi árajánlat-kérése
+              sikeresen megérkezett hozzánk. Munkatársunk <strong>24 órán belül</strong>
+              felveszi Önnel a kapcsolatot a megadott elérhetőségen.
+            </p>
+
+            <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e4e4e7;margin-top:12px;">
+              <tr><td style="padding:12px 0;border-bottom:1px solid #e4e4e7;width:140px;color:#71717a;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;">Telefon</td><td style="padding:12px 0;border-bottom:1px solid #e4e4e7;font-size:14px;font-weight:600;">{payload.phone}</td></tr>
+              <tr><td style="padding:12px 0;border-bottom:1px solid #e4e4e7;color:#71717a;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;">E-mail</td><td style="padding:12px 0;border-bottom:1px solid #e4e4e7;font-size:14px;font-weight:600;">{payload.email}</td></tr>
+              <tr><td style="padding:12px 0;border-bottom:1px solid #e4e4e7;color:#71717a;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;">Mennyiség</td><td style="padding:12px 0;border-bottom:1px solid #e4e4e7;font-size:14px;font-weight:600;">{sqm_fmt} m²</td></tr>
+            </table>
+
+            {services_block}
+
+            {f'<div style="margin-top:24px;"><div style="color:#71717a;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Az Ön üzenete</div><div style="background:#f4f4f5;padding:14px;border-left:3px solid #f97316;font-size:14px;line-height:1.6;">{safe_message}</div></div>' if safe_message.strip() else ''}
+
+            <div style="margin-top:28px;padding:18px;background:#fff7ed;border:1px solid #fed7aa;">
+              <div style="font-size:13px;font-weight:700;color:#9a3412;margin-bottom:6px;">📞 Sürgős kérdése van?</div>
+              <div style="font-size:14px;color:#18181b;">
+                Hívjon minket közvetlenül: <a href="tel:+36300881236" style="color:#f97316;font-weight:700;text-decoration:none;">+36 30 088 1236</a><br/>
+                E-mail: <a href="mailto:info.benotekbau@gmail.com" style="color:#f97316;font-weight:700;text-decoration:none;">info.benotekbau@gmail.com</a>
+              </div>
+            </div>
+
+            <p style="margin:24px 0 0 0;font-size:11px;color:#a1a1aa;font-style:italic;line-height:1.5;">
+              Az árak tájékoztató jellegűek, a felület állapotától, a munka összetettségétől
+              és a helyszíni adottságoktól függően változhatnak. A pontos árajánlat a
+              helyszíni felmérés után készül el.
+            </p>
+
+            <p style="margin:18px 0 0 0;font-size:13px;color:#3f3f46;">
+              Üdvözlettel,<br/>
+              <strong>BENOTEK-BAU Kft.</strong>
+            </p>
+          </td></tr>
+          <tr><td style="background:#18181b;padding:14px 28px;color:#a1a1aa;font-size:11px;text-align:center;">
+            BENOTEK-BAU Kft. · Cementes gépi vakolás · Magyarország
+          </td></tr>
+        </table>
+      </td></tr>
+    </table>
+    """
+
+
+async def send_customer_confirmation(submission: ContactSubmission) -> bool:
+    """Send auto-confirmation email to the customer who submitted the form.
+
+    Note: With Resend's default `onboarding@resend.dev` sender (free tier without
+    a verified domain), emails can only be delivered to the Resend account's
+    verified address. Sending to arbitrary customer emails requires a verified
+    domain. We try anyway and log on failure — the main company notification is
+    independent of this.
+    """
+    if not resend.api_key:
+        return False
+    params = {
+        "from": SENDER_EMAIL,
+        "to": [submission.email],
+        "reply_to": CONTACT_RECIPIENT_EMAIL or SENDER_EMAIL,
+        "subject": "Köszönjük megkeresését – BENOTEK-BAU Kft.",
+        "html": build_customer_confirmation_html(submission),
+    }
+    try:
+        result = await asyncio.to_thread(resend.Emails.send, params)
+        logger.info(f"Resend email sent (customer confirmation): {result}")
+        return True
+    except Exception as e:
+        logger.warning(
+            f"Customer confirmation email skipped/failed for {submission.email}: {e}. "
+            "This is expected on Resend free tier without a verified domain."
+        )
         return False
 
 
@@ -247,6 +335,9 @@ async def submit_contact(payload: ContactSubmissionCreate):
 
     email_sent = await send_contact_email(submission)
     submission.email_sent = email_sent
+
+    # Send auto-confirmation to the customer (best-effort, won't fail the request)
+    await send_customer_confirmation(submission)
 
     doc = submission.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()

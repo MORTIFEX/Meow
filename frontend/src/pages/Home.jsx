@@ -47,7 +47,7 @@ export default function Home() {
               BENOTEK-BAU Kft.
             </div>
 
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95]" data-testid="hero-title">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95]" data-testid="hero-title">
               Professzionális<br />
               <span className="text-primary">cementes gépi vakolás</span><br />
               kivitelezés.
@@ -79,13 +79,13 @@ export default function Home() {
           </div>
 
           {/* Stats strip */}
-          <div className="relative mt-24 grid grid-cols-3 gap-px bg-white/10" data-testid="hero-stats">
+          <div className="relative mt-16 sm:mt-24 grid grid-cols-3 gap-px bg-white/10" data-testid="hero-stats">
             {stats.map((s, i) => (
-              <div key={i} className="bg-[#18181B] px-4 py-6 lg:p-8">
-                <div className="font-display text-3xl lg:text-5xl font-extrabold text-primary">
+              <div key={i} className="bg-[#18181B] px-3 py-5 sm:px-4 sm:py-6 lg:p-8">
+                <div className="font-display text-2xl sm:text-3xl lg:text-5xl font-extrabold text-primary leading-none">
                   {s.value}
                 </div>
-                <div className="mt-2 text-[10px] lg:text-xs uppercase tracking-widest text-zinc-400">
+                <div className="mt-2 text-[9px] sm:text-[10px] lg:text-xs uppercase tracking-widest text-zinc-400 leading-tight">
                   {s.label}
                 </div>
               </div>
@@ -221,18 +221,18 @@ export default function Home() {
             </div>
 
             <div className="lg:col-span-5">
-              <div className="bg-[#18181B] text-white p-10 lg:p-14 relative overflow-hidden">
+              <div className="bg-[#18181B] text-white p-8 sm:p-10 lg:p-14 relative overflow-hidden">
                 <div className="absolute -top-10 -right-10 h-40 w-40 bg-primary/20 blur-3xl" />
                 <div className="relative">
                   <div className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">
                     Cementes gépi vakolás
                   </div>
-                  <div className="mt-6 flex items-baseline gap-2">
-                    <div className="font-display text-6xl lg:text-7xl font-extrabold text-primary leading-none">
+                  <div className="mt-6 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <div className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold text-primary leading-none">
                       2500
                     </div>
                     <div className="font-display text-2xl text-zinc-400">–</div>
-                    <div className="font-display text-6xl lg:text-7xl font-extrabold text-primary leading-none">
+                    <div className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold text-primary leading-none">
                       4000
                     </div>
                   </div>
@@ -241,7 +241,7 @@ export default function Home() {
                   </div>
                   <div className="mt-10 pt-8 border-t border-zinc-800">
                     <div className="flex items-center gap-3 text-sm text-zinc-300">
-                      <Clock className="h-4 w-4 text-primary" />
+                      <Clock className="h-4 w-4 text-primary shrink-0" />
                       <span>Általában 1-3 nap kivitelezés</span>
                     </div>
                   </div>

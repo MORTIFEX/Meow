@@ -220,7 +220,7 @@ export default function Contact() {
           <div className="text-xs uppercase tracking-[0.3em] text-primary font-semibold mb-6">
             Kapcsolat
           </div>
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95] max-w-4xl">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95] max-w-4xl">
             Beszéljünk a<br />
             <span className="text-primary">projektjéről.</span>
           </h1>
@@ -311,7 +311,7 @@ export default function Contact() {
 
             {/* Right – Form */}
             <div className="lg:col-span-7">
-              <div className="bg-card border border-border p-8 lg:p-12" data-testid="contact-form-card">
+              <div className="bg-card border border-border p-5 sm:p-8 lg:p-12" data-testid="contact-form-card">
                 {success ? (
                   <div className="py-16 text-center" data-testid="contact-success">
                     <div className="mx-auto flex h-20 w-20 items-center justify-center bg-primary text-primary-foreground mb-8">
@@ -406,15 +406,15 @@ export default function Contact() {
                         type="button"
                         onClick={() => setShowServices((v) => !v)}
                         data-testid="toggle-services-panel"
-                        className="w-full flex items-center justify-between gap-4 px-5 py-4 bg-muted hover:bg-muted/70 transition-colors"
+                        className="w-full flex items-center justify-between gap-3 px-4 py-3 sm:px-5 sm:py-4 bg-muted hover:bg-muted/70 transition-colors text-left"
                       >
-                        <div className="flex items-center gap-3 text-left">
-                          <Layers className="h-5 w-5 text-primary" />
-                          <div>
+                        <div className="flex items-start sm:items-center gap-3 min-w-0">
+                          <Layers className="h-5 w-5 text-primary shrink-0 mt-0.5 sm:mt-0" />
+                          <div className="min-w-0">
                             <div className="font-display font-bold text-sm uppercase tracking-wider">
                               Részletes szolgáltatások
                             </div>
-                            <div className="text-xs text-muted-foreground mt-0.5">
+                            <div className="text-xs text-muted-foreground mt-0.5 break-words">
                               {selectedCount} szolgáltatás kiválasztva · becsült ár:{" "}
                               <strong className="text-primary">
                                 {formatRange(calc.totalMin, calc.totalMax)}
@@ -430,7 +430,7 @@ export default function Contact() {
                       </button>
 
                       {showServices && (
-                        <div className="p-5 bg-white border-t border-border" data-testid="services-panel-body">
+                        <div className="p-3 sm:p-5 bg-white border-t border-border" data-testid="services-panel-body">
                           <p className="text-xs text-muted-foreground mb-4">
                             Pipálja ki amire szüksége van. Az itt kiválasztott tételek megjelennek az e-mailben, amit elküldünk magunknak.
                           </p>
@@ -520,7 +520,7 @@ function FormServiceGroup({ icon, title, children, last }) {
   return (
     <div className={last ? "" : "mb-5 pb-5 border-b border-dashed border-border"}>
       <div className="flex items-center gap-2 mb-3">
-        <div className="flex h-6 w-6 items-center justify-center bg-primary text-primary-foreground">{icon}</div>
+        <div className="flex h-6 w-6 items-center justify-center bg-primary text-primary-foreground shrink-0">{icon}</div>
         <div className="font-display font-bold text-xs uppercase tracking-wider">{title}</div>
       </div>
       <div className="border border-border">{children}</div>
@@ -528,7 +528,7 @@ function FormServiceGroup({ icon, title, children, last }) {
   );
 }
 
-function FormRowShell({ id, checked, onCheck, children }) {
+function FormRowShell({ id, checked, onCheck, primary, controls, amount }) {
   return (
     <div
       className={`flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 px-3 py-2.5 border-b border-border last:border-b-0 transition-colors ${
@@ -536,14 +536,22 @@ function FormRowShell({ id, checked, onCheck, children }) {
       }`}
       data-testid={`form-row-${id}`}
     >
-      <label className="flex items-center gap-2.5 flex-1 cursor-pointer select-none min-w-0">
+      <label className="flex items-start sm:items-center gap-2.5 flex-1 cursor-pointer select-none min-w-0">
         <Checkbox
           checked={checked} onCheckedChange={onCheck}
           data-testid={`form-check-${id}`}
-          className="rounded-none border-2 border-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary shrink-0"
+          className="rounded-none border-2 border-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary mt-0.5 sm:mt-0 shrink-0"
         />
-        {children}
+        <div className="flex-1 min-w-0">{primary}</div>
       </label>
+      {controls && (
+        <div className="flex items-center gap-1.5 shrink-0 pl-7 sm:pl-0" onClick={(e) => e.preventDefault()}>
+          {controls}
+        </div>
+      )}
+      <div className="text-left sm:text-right font-mono-alt text-xs tabular-nums sm:w-32 shrink-0 pl-7 sm:pl-0">
+        {amount}
+      </div>
     </div>
   );
 }
@@ -552,71 +560,93 @@ function FormRateRow({ service, state, onCheck, onQty }) {
   const checked = !!state?.checked;
   const qty = Number(state?.qty) || 0;
   return (
-    <FormRowShell id={service.id} checked={checked} onCheck={onCheck}>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-semibold leading-tight">{service.name}</div>
-        <div className="text-[10px] text-muted-foreground font-mono-alt mt-0.5">
-          {service.min}–{service.max} Ft/{service.unit}
-        </div>
-      </div>
-      {checked && (
-        <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.preventDefault()}>
-          <Input
-            type="number" min="0" step="1" value={state.qty}
-            onChange={(e) => onQty(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            data-testid={`form-qty-${service.id}`}
-            className="rounded-none h-8 w-20 text-sm font-display font-bold focus-visible:ring-primary focus-visible:ring-offset-0"
-          />
-          <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground w-7">{service.unit}</span>
-        </div>
-      )}
-      <div className={`text-right font-mono-alt text-xs tabular-nums w-full sm:w-32 ${checked && qty > 0 ? "text-primary font-bold" : "text-muted-foreground"}`}>
-        {checked && qty > 0 ? `${formatFt(qty * service.min)} – ${formatFt(qty * service.max)}` : "—"}
-      </div>
-    </FormRowShell>
+    <FormRowShell
+      id={service.id} checked={checked} onCheck={onCheck}
+      primary={
+        <>
+          <div className="text-sm font-semibold leading-tight">{service.name}</div>
+          <div className="text-[10px] text-muted-foreground font-mono-alt mt-0.5">
+            {service.min}–{service.max} Ft/{service.unit}
+          </div>
+        </>
+      }
+      controls={
+        checked ? (
+          <>
+            <Input
+              type="number" min="0" step="1" value={state.qty}
+              onChange={(e) => onQty(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              data-testid={`form-qty-${service.id}`}
+              className="rounded-none h-8 w-20 text-sm font-display font-bold focus-visible:ring-primary focus-visible:ring-offset-0"
+            />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground w-7">{service.unit}</span>
+          </>
+        ) : null
+      }
+      amount={
+        <span className={checked && qty > 0 ? "text-primary font-bold" : "text-muted-foreground"}>
+          {checked && qty > 0 ? `${formatFt(qty * service.min)} – ${formatFt(qty * service.max)}` : "—"}
+        </span>
+      }
+    />
   );
 }
 
 function FormCustomRow({ service, state, onCheck }) {
   const checked = !!state?.checked;
   return (
-    <FormRowShell id={service.id} checked={checked} onCheck={onCheck}>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-semibold leading-tight">{service.name}</div>
-        <div className="text-[10px] text-muted-foreground mt-0.5">{service.note}</div>
-      </div>
-      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground shrink-0">Egyedi ár</div>
-    </FormRowShell>
+    <FormRowShell
+      id={service.id} checked={checked} onCheck={onCheck}
+      primary={
+        <>
+          <div className="text-sm font-semibold leading-tight">{service.name}</div>
+          <div className="text-[10px] text-muted-foreground mt-0.5">{service.note}</div>
+        </>
+      }
+      amount={
+        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Egyedi ár</span>
+      }
+    />
   );
 }
 
 function FormPercentRow({ service, state, onCheck }) {
   const checked = !!state?.checked;
   return (
-    <FormRowShell id={service.id} checked={checked} onCheck={onCheck}>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-semibold leading-tight">{service.name}</div>
-        <div className="text-[10px] text-muted-foreground mt-0.5">{service.description}</div>
-      </div>
-      <div className={`text-xs font-mono-alt shrink-0 ${checked ? "text-primary font-bold" : "text-muted-foreground"}`}>
-        +{service.min}–{service.max}%
-      </div>
-    </FormRowShell>
+    <FormRowShell
+      id={service.id} checked={checked} onCheck={onCheck}
+      primary={
+        <>
+          <div className="text-sm font-semibold leading-tight">{service.name}</div>
+          <div className="text-[10px] text-muted-foreground mt-0.5">{service.description}</div>
+        </>
+      }
+      amount={
+        <span className={checked ? "text-primary font-bold" : "text-muted-foreground"}>
+          +{service.min}–{service.max}%
+        </span>
+      }
+    />
   );
 }
 
 function FormFixedRow({ service, state, onCheck }) {
   const checked = !!state?.checked;
   return (
-    <FormRowShell id={service.id} checked={checked} onCheck={onCheck}>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-semibold leading-tight">{service.name}</div>
-        <div className="text-[10px] text-muted-foreground mt-0.5">{service.description}</div>
-      </div>
-      <div className={`text-xs font-mono-alt shrink-0 ${checked ? "text-primary font-bold" : "text-muted-foreground"}`}>
-        {formatFt(service.min)} – {formatFt(service.max)}
-      </div>
-    </FormRowShell>
+    <FormRowShell
+      id={service.id} checked={checked} onCheck={onCheck}
+      primary={
+        <>
+          <div className="text-sm font-semibold leading-tight">{service.name}</div>
+          <div className="text-[10px] text-muted-foreground mt-0.5">{service.description}</div>
+        </>
+      }
+      amount={
+        <span className={checked ? "text-primary font-bold" : "text-muted-foreground"}>
+          {formatFt(service.min)} – {formatFt(service.max)}
+        </span>
+      }
+    />
   );
 }
