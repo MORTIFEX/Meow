@@ -218,7 +218,7 @@ export default function Services() {
               </p>
 
               <img
-                src="https://www.daibau.hu/images/backgrounds/127-1-m.jpg"
+                src="https://koves-szerszam.hu/img/6202/KOM_26-00257359/KOM_26-00257359.jpg"
                 alt="Cementes gépi vakolás"
                 className="mt-10 w-full h-80 object-cover"
                 loading="lazy"
