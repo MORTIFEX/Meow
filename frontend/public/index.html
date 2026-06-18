@@ -73,7 +73,14 @@
                 "url": "https://benotekbau.hu"
             }
         </script>
+        <script>
+async function getData() {
+  const res = await fetch("https://benotek-bau.onrender.com/api");
+  const data = await res.json();
 
+  console.log(data);
+}
+</script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
