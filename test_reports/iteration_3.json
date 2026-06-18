@@ -1,0 +1,42 @@
+{
+  "summary": "Iteration 3: BENOTEK-BAU logo+favicon+calc-to-contact-form passthrough. All features verified end-to-end. Backend POST /api/contact accepts mixed services array (munkadij/extras/percent/fixed/custom) with total_min/total_max — returned echoed payload contains the full ServiceLineItem list with correct categories and values. Favicon.svg served at /favicon.svg (200, image/svg+xml, valid SVG markup). Frontend: SVG brand-logo (data-testid='brand-logo') renders once in header and once in footer (replacing previous 'B' div). favicon link present in <head> and resolves correctly. Services calculator calc-cta navigates to /kapcsolat with location.state={sqm,calcItems}; sqm is prefilled, services-panel expanded, tapadohid checkbox preset to checked. Toggle-services-panel button collapses/expands the panel body. Bidirectional sync between form-sqm and form-qty-cementes works (form→200 sets cementes qty=200; cementes qty=150 sets form sqm=150). Submission network payload contains services[] with category fields plus total_min/total_max (verified: cementes munkadij, tapadohid extras, lepcsohaz percent). Success state shown after submit; 'Új üzenet küldése' resets form sqm to empty. Fresh load of /kapcsolat (no state) keeps services-panel collapsed by default.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "passed": [
+    "GET /favicon.svg -> 200 image/svg+xml with valid B+notch+stripe SVG",
+    "<link rel='icon' type='image/svg+xml' href='/favicon.svg'> present in <head>",
+    "Header contains exactly 1 element with data-testid='brand-logo' (replacing old 'B' div)",
+    "Footer contains exactly 1 element with data-testid='brand-logo' (replacing old 'B' div)",
+    "POST /api/contact accepts services=[munkadij+extras+percent+fixed+custom] + total_min/total_max -> 200, response echoes full ServiceLineItem[] with categories preserved; persisted to DB; email_sent=true",
+    "Services calc-cta navigates to /kapcsolat with location.state.sqm and location.state.calcItems",
+    "On arrival from calc-cta: form-sqm prefilled to last cementes qty; services-panel-body expanded; preset checkboxes (e.g. tapadohid) reflect calculator state",
+    "toggle-services-panel button collapses panel body, second click re-expands",
+    "Form sqm -> services sync: setting form-sqm=200 updates form-qty-cementes to 200",
+    "Services qty -> form sync: setting form-qty-cementes=150 updates form-sqm to 150",
+    "Submit network payload contains services array with category=munkadij/extras/percent fields and total_min=442500 / total_max=850000 for the test inputs",
+    "After submit: contact-success rendered; clicking contact-send-another clears form (sqm='')",
+    "Fresh navigation to /kapcsolat (no SPA state): services-panel exists but body collapsed by default (correct)",
+    "Same brand-logo SVG is used in /favicon.svg (B with notch + plaster stripes)"
+  ],
+  "failed": [],
+  "test_report_links": [
+    "/app/backend/tests/test_benotek_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "critical_code_review_comments": [
+    "server.py build_html_email() still references hardcoded '3 500 Ft/m² átlagáron' average — with the new range pricing model + per-service breakdown via build_services_html(), this avg line is mildly redundant. Non-blocking.",
+    "ContactSubmission.total_price still computed from PRICE_PER_SQM (3500) but the user-visible total in the email body now comes from total_min/total_max in the services table; consider deprecating total_price or aligning naming. Non-blocking.",
+    "Contact.jsx setSvcChecked: when checking a non-cementes m²-unit rate row whose previous qty is 0, it inherits services.cementes.qty as fallback rather than form.square_meters. Works correctly in current flow but slightly inconsistent with Services.jsx pattern.",
+    "Float precision: total_min sent as 442500.00000000006 (JS arithmetic). Backend accepts via float field; consider rounding on the frontend before submit for cleaner emails.",
+    "Pydantic v2 deprecation: @app.on_event('shutdown') is deprecated (consider lifespan). Non-blocking, carried over from prior iteration."
+  ],
+  "test_credentials": "N/A — public endpoints, no auth",
+  "seed_data_creation": "1 contact submission created in DB via curl (TEST_Multi) + 1 via frontend submit (TEST Frontend). Existing TEST_ records from prior iterations remain. Harmless.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 3 (logo, favicon, calc->contact state passthrough, services payload) is fully green. Calculator math + pricing already validated in iter 2. The full calc→form→API→DB→email pipeline now carries services breakdown + total range. data-testids used: brand-logo, services-panel, services-panel-body, toggle-services-panel, form-check-{id}, form-qty-{id}, form-sqm, calc-cta. Regression tests at /app/backend/tests/test_benotek_api.py still pass.",
+  "rca of the issue": "No issues found."
+}

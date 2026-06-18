@@ -350,7 +350,7 @@ export default function Services() {
 
                 <Link
                   to="/kapcsolat"
-                  state={{ sqm: baseSqm }}
+                  state={{ sqm: baseSqm, calcItems: items }}
                   data-testid="calc-cta"
                   className="mt-6 group inline-flex w-full items-center justify-center gap-3 bg-foreground text-background px-6 py-3 font-bold uppercase tracking-wider text-sm hover:bg-primary transition-colors"
                 >

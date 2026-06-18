@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { COMPANY } from "@/lib/company";
+import Logo from "@/components/Logo";
 
 const navLinks = [
   { to: "/", label: "Főoldal", testId: "nav-home" },
@@ -26,9 +27,7 @@ export default function Header() {
             data-testid="logo-link"
             onClick={() => setOpen(false)}
           >
-            <div className="flex h-11 w-11 items-center justify-center bg-primary text-primary-foreground font-display font-extrabold text-xl">
-              B
-            </div>
+            <Logo size={44} className="shrink-0 group-hover:rotate-3 transition-transform duration-300" />
             <div className="leading-none">
               <div className="font-display text-lg font-extrabold tracking-tight">
                 BENOTEK-BAU

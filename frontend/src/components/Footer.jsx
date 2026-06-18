@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, ArrowUpRight } from "lucide-react";
 import { COMPANY } from "@/lib/company";
+import Logo from "@/components/Logo";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -14,9 +15,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-5">
             <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-12 w-12 items-center justify-center bg-primary text-primary-foreground font-display font-extrabold text-xl">
-                B
-              </div>
+              <Logo size={48} className="shrink-0" />
               <div>
                 <div className="font-display text-2xl font-extrabold">BENOTEK-BAU Kft.</div>
                 <div className="text-[10px] uppercase tracking-[0.25em] text-zinc-500 mt-1">
