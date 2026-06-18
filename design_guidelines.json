@@ -1,0 +1,118 @@
+{
+  "theme": "light",
+  "archetype": "Archetype 4 (Swiss & High-Contrast - Construction Variant)",
+  "color_palette": {
+    "background": "#F4F4F5",
+    "foreground": "#18181B",
+    "primary": "#F97316",
+    "primary_foreground": "#FFFFFF",
+    "secondary": "#27272A",
+    "secondary_foreground": "#FFFFFF",
+    "muted": "#E4E4E7",
+    "muted_foreground": "#71717A",
+    "accent": "#F97316",
+    "accent_foreground": "#FFFFFF",
+    "border": "#D4D4D8",
+    "card": "#FFFFFF",
+    "card_foreground": "#18181B",
+    "footer_background": "#18181B",
+    "footer_foreground": "#FAFAFA"
+  },
+  "typography": {
+    "headings": {
+      "font_family": "Outfit",
+      "weights": ["600", "700", "800"],
+      "tracking": "tracking-tight"
+    },
+    "body": {
+      "font_family": "Manrope",
+      "weights": ["400", "500", "600"],
+      "line_height": "leading-relaxed"
+    },
+    "sizes": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-extrabold",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold",
+      "h3": "text-xl sm:text-2xl font-semibold",
+      "h4": "text-lg sm:text-xl font-semibold",
+      "p": "text-base",
+      "small": "text-sm text-muted-foreground uppercase tracking-widest font-semibold"
+    }
+  },
+  "layout_and_spacing": {
+    "container_padding": "px-6 md:px-12 lg:px-24 py-16 lg:py-24",
+    "grid_gap": "gap-8 md:gap-12",
+    "card_padding": "p-8 md:p-12",
+    "border_radius": "rounded-none" 
+  },
+  "component_instructions": {
+    "buttons": "Square edges (rounded-none), high contrast, hover effect: -translate-y-1 shadow-lg bg-primary hover:bg-orange-600 transition-all duration-300.",
+    "cards": "Flat background, 1px solid border (#D4D4D8), rounded-none, subtle hover lift.",
+    "header": "Sticky glassmorphism (backdrop-blur-xl bg-white/80), z-50, sharp bottom border.",
+    "footer": "Dark background (#18181B), massive spacing (py-20), orange accent elements.",
+    "inputs": "Shadcn UI Input, rounded-none, focus-visible:ring-primary.",
+    "calculator": "A dedicated interactive card in the Services page. Uses standard input for square meters, calculates output dynamically (sqm * 3500 Ft). High contrast typography for the total price."
+  },
+  "image_urls": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1614595737476-42487331b8a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBidWlsZGluZyUyMGNvbmNyZXRlfGVufDB8fHx8MTc4MTc4Nzg0Mnww&ixlib=rb-4.1.0&q=85",
+      "description": "gray concrete building under blue sky",
+      "usage": "Hero section background with dark overlay bg-black/40 for text contrast."
+    },
+    "service_machine_plastering": {
+      "url": "https://images.unsplash.com/photo-1523413307857-ef24c53571ae?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODR8MHwxfHNlYXJjaHwxfHxjb25zdHJ1Y3Rpb24lMjBwbGFzdGVyaW5nJTIwd29ya2VyfGVufDB8fHx8MTc4MTc4Nzg0Mnww&ixlib=rb-4.1.0&q=85",
+      "description": "person working on wall",
+      "usage": "Image for the main 'Gépi vakolás' service card or section."
+    },
+    "about_us": {
+      "url": "https://images.pexels.com/photos/5493658/pexels-photo-5493658.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "construction worker plastering",
+      "usage": "About us or 'Why choose us' section imagery."
+    },
+    "contact_blueprint": {
+      "url": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwyfHxhcmNoaXRlY3R1cmFsJTIwYmx1ZXByaW50c3xlbnwwfHx8fDE3ODE3ODc4NDJ8MA&ixlib=rb-4.1.0&q=85",
+      "description": "architect working on a draft",
+      "usage": "Contact page decorative image or background."
+    }
+  },
+  "business_info": {
+    "company_name": "BENOTEK-BAU Kft.",
+    "email": "info.benotekbau@gmail.com",
+    "phone": "+36 30 088 1236",
+    "price_per_sqm": 3500
+  },
+  "pages": {
+    "Home": {
+      "path": "/",
+      "sections": [
+        "Hero (Title: Professzionális Gépi Vakolás, Subtitle: BENOTEK-BAU Kft., CTA: Kérjen árajánlatot)",
+        "About/Why Us (Gyorsaság, Precizitás, Megbízhatóság)",
+        "Services Overview (Link to Services page)",
+        "CTA Banner (Contact us today)"
+      ]
+    },
+    "Services": {
+      "path": "/szolgaltatasok",
+      "sections": [
+        "Page Header (Szolgáltatásaink)",
+        "Detailed Info (Gépi vakolás technológia, előnyök)",
+        "Price Calculator Widget (m2 input * 3500 Ft = Total price)"
+      ]
+    },
+    "Contact": {
+      "path": "/kapcsolat",
+      "sections": [
+        "Page Header (Kapcsolat)",
+        "Contact Details (Email: info.benotekbau@gmail.com, Phone: +36 30 088 1236)",
+        "Contact Form (Name, Phone, Email, m2, Message, Submit Button)"
+      ]
+    }
+  },
+  "global_rules": [
+    "Use pure HTML + Tailwind for structural layouts. Shadcn UI for interactive elements (Forms, Inputs, Buttons).",
+    "All interactive and key informational elements MUST include a data-testid attribute.",
+    "Do not use generic font like Inter for headings. Ensure 'Outfit' is loaded from Google Fonts.",
+    "Ensure generous padding for sections (py-24) to let the content breathe.",
+    "Button hover effects should be distinct and provide good contrast.",
+    "All text is in Hungarian."
+  ]
+}
