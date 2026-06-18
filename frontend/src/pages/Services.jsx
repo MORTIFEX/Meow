@@ -218,8 +218,8 @@ export default function Services() {
               </p>
 
               <img
-                src="https://images.pexels.com/photos/5493658/pexels-photo-5493658.jpeg?auto=compress&cs=tinysrgb&w=940"
-                alt="Cementes gépi vakolás kivitelezés"
+                src="https://www.daibau.hu/images/backgrounds/127-1-m.jpg"
+                alt="Cementes gépi vakolás"
                 className="mt-10 w-full h-80 object-cover"
                 loading="lazy"
                 data-testid="services-about-image"

@@ -149,7 +149,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <img
-                src="https://images.pexels.com/photos/10383588/pexels-photo-10383588.jpeg?auto=compress&cs=tinysrgb&w=940"
+                src="https://gepifesto.hu/wp-content/uploads/2024/01/gepi-vakolas-arak.webp"
                 alt="Cementes gépi vakolás kivitelezés folyamatban"
                 className="w-full h-[500px] object-cover grayscale hover:grayscale-0 transition-all duration-700"
                 loading="lazy"
