@@ -1,0 +1,174 @@
+// Comprehensive pricing data for BENOTEK-BAU machine plastering calculator.
+// Types:
+//   'rate'    - quantity * (min..max) Ft per unit (m², fm, db, m³)
+//   'percent' - % surcharge applied to munkadíj base
+//   'fixed'   - one-time fixed range (no quantity)
+//   'custom'  - "egyedi ár" — informational only, not added to total
+// `base: true` marks the Cementes gépi vakolás (munkadíj base) which is the
+// reference value percentage modifiers are applied to.
+
+export const SERVICES = [
+  {
+    id: "cementes",
+    name: "Cementes gépi vakolás (csak munkadíj)",
+    type: "rate",
+    unit: "m²",
+    min: 2500,
+    max: 4000,
+    base: true,
+    defaultChecked: true,
+    defaultQty: 50,
+    description: "A teljes vakolás alapdíja — munkadíj felület arányában.",
+  },
+  {
+    id: "tapadohid",
+    name: "Tapadóhíd felhordása",
+    type: "rate",
+    unit: "m²",
+    min: 300,
+    max: 700,
+  },
+  {
+    id: "elofroccsoles",
+    name: "Előfröcskölés",
+    type: "rate",
+    unit: "m²",
+    min: 300,
+    max: 600,
+  },
+  {
+    id: "halozas",
+    name: "Hálózás (anyag nélkül)",
+    type: "rate",
+    unit: "m²",
+    min: 500,
+    max: 1000,
+  },
+  {
+    id: "anyagtalalkozasok",
+    name: "Anyagtalálkozások hálózása",
+    type: "rate",
+    unit: "fm",
+    min: 800,
+    max: 1800,
+  },
+  {
+    id: "elvedo",
+    name: "Élvédő felrakása",
+    type: "rate",
+    unit: "fm",
+    min: 300,
+    max: 600,
+  },
+  {
+    id: "ablakkava",
+    name: "Ablakkáva vakolása",
+    type: "rate",
+    unit: "fm",
+    min: 800,
+    max: 1500,
+  },
+  {
+    id: "ajtokava",
+    name: "Ajtókáva vakolása",
+    type: "rate",
+    unit: "fm",
+    min: 800,
+    max: 1500,
+  },
+  {
+    id: "redonytok",
+    name: "Redőnytok körüli kialakítás",
+    type: "rate",
+    unit: "db",
+    min: 1000,
+    max: 3000,
+  },
+  {
+    id: "piller",
+    name: "Pillér vakolása",
+    type: "rate",
+    unit: "db",
+    min: 1500,
+    max: 4000,
+  },
+  {
+    id: "gerenda",
+    name: "Gerenda, áthidaló kialakítása",
+    type: "custom",
+    note: "Egyedi ár — kérjen ajánlatot",
+  },
+  {
+    id: "simitas",
+    name: "Vakolat simítása",
+    type: "rate",
+    unit: "m²",
+    min: 300,
+    max: 800,
+  },
+  {
+    id: "glettre",
+    name: 'Cementes vakolat "glettre húzása"',
+    type: "rate",
+    unit: "m²",
+    min: 500,
+    max: 1000,
+  },
+  {
+    id: "takaras",
+    name: "Takarás, fóliázás",
+    type: "rate",
+    unit: "m²",
+    min: 100,
+    max: 300,
+  },
+  {
+    id: "anyagbetermeles",
+    name: "Anyagbetermelés",
+    type: "rate",
+    unit: "m³",
+    min: 500,
+    max: 3000,
+  },
+  {
+    id: "tobbletvakolat",
+    name: "Többletvakolat",
+    type: "custom",
+    note: "Egyedi ár — kérjen ajánlatot",
+  },
+  {
+    id: "lepcsohaz",
+    name: "Lépcsőház felár",
+    type: "percent",
+    min: 10,
+    max: 30,
+    description: "Munkadíjra rakódó felár",
+  },
+  {
+    id: "magassag",
+    name: "3,5 m feletti magasság",
+    type: "percent",
+    min: 10,
+    max: 20,
+    description: "Munkadíjra rakódó felár",
+  },
+  {
+    id: "allvany",
+    name: "Állványról végzett munka",
+    type: "percent",
+    min: 10,
+    max: 20,
+    description: "Munkadíjra rakódó felár",
+  },
+  {
+    id: "gepkiszallas",
+    name: "Gép kiszállás",
+    type: "fixed",
+    min: 50000,
+    max: 150000,
+    description: "Egyszeri tétel projektenként",
+  },
+];
+
+export const PRICING_DISCLAIMER =
+  "Az árak tájékoztató jellegűek, a felület állapotától, a munka összetettségétől és a helyszíni adottságoktól függően változhatnak.";

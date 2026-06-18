@@ -56,10 +56,15 @@ class ContactSubmission(BaseModel):
 
 
 PRICE_PER_SQM = 3500
+PRICE_PER_SQM_MIN = 2500
+PRICE_PER_SQM_MAX = 4000
 
 
 def build_html_email(payload: ContactSubmission) -> str:
     total_fmt = f"{int(payload.total_price):,}".replace(",", " ")
+    total_min = int(payload.square_meters * PRICE_PER_SQM_MIN)
+    total_max = int(payload.square_meters * PRICE_PER_SQM_MAX)
+    range_fmt = f"{total_min:,} – {total_max:,}".replace(",", " ")
     sqm_fmt = f"{payload.square_meters:g}"
     safe_message = (payload.message or "").replace("\n", "<br/>")
     created = payload.created_at.strftime("%Y-%m-%d %H:%M UTC")
@@ -78,15 +83,17 @@ def build_html_email(payload: ContactSubmission) -> str:
               <tr><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;color:#71717a;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;">Telefon</td><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;font-size:15px;font-weight:600;"><a href="tel:{payload.phone}" style="color:#18181b;text-decoration:none;">{payload.phone}</a></td></tr>
               <tr><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;color:#71717a;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;">E-mail</td><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;font-size:15px;font-weight:600;"><a href="mailto:{payload.email}" style="color:#18181b;text-decoration:none;">{payload.email}</a></td></tr>
               <tr><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;color:#71717a;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;">Mennyiség</td><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;font-size:15px;font-weight:600;">{sqm_fmt} m²</td></tr>
-              <tr><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;color:#71717a;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;">Becsült ár</td><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;font-size:18px;font-weight:800;color:#f97316;">{total_fmt} Ft</td></tr>
+              <tr><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;color:#71717a;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;">Becsült munkadíj tartomány</td><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;font-size:18px;font-weight:800;color:#f97316;">{range_fmt} Ft</td></tr>
+              <tr><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;color:#71717a;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;">Átlag becslés</td><td style="padding:14px 0;border-bottom:1px solid #e4e4e7;font-size:14px;color:#71717a;">{total_fmt} Ft <span style="font-size:11px;">(3 500 Ft/m² átlagáron)</span></td></tr>
             </table>
             <div style="margin-top:24px;">
               <div style="color:#71717a;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Üzenet</div>
               <div style="background:#f4f4f5;padding:16px;border-left:3px solid #f97316;font-size:14px;line-height:1.6;">{safe_message or "<em style='color:#a1a1aa;'>Nincs üzenet megadva.</em>"}</div>
             </div>
             <p style="margin:28px 0 0 0;font-size:12px;color:#a1a1aa;">Beküldve: {created}</p>
+            <p style="margin:8px 0 0 0;font-size:11px;color:#a1a1aa;font-style:italic;">Az árak tájékoztató jellegűek, a felület állapotától, a munka összetettségétől és a helyszíni adottságoktól függően változhatnak.</p>
           </td></tr>
-          <tr><td style="background:#18181b;padding:14px 28px;color:#a1a1aa;font-size:11px;">BENOTEK-BAU Kft. · Gépi vakolás · Automatikus értesítés</td></tr>
+          <tr><td style="background:#18181b;padding:14px 28px;color:#a1a1aa;font-size:11px;">BENOTEK-BAU Kft. · Cementes gépi vakolás · Automatikus értesítés</td></tr>
         </table>
       </td></tr>
     </table>
@@ -126,6 +133,8 @@ async def get_config():
         "email": "info.benotekbau@gmail.com",
         "phone": "+36 30 088 1236",
         "price_per_sqm": PRICE_PER_SQM,
+        "price_per_sqm_min": PRICE_PER_SQM_MIN,
+        "price_per_sqm_max": PRICE_PER_SQM_MAX,
         "currency": "Ft",
     }
 

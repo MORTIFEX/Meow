@@ -30,8 +30,10 @@ export default function Contact() {
 
   const estimatedPrice = useMemo(() => {
     const n = Number(form.square_meters);
-    if (Number.isFinite(n) && n > 0) return n * COMPANY.pricePerSqm;
-    return 0;
+    if (Number.isFinite(n) && n > 0) {
+      return { min: n * COMPANY.pricePerSqmMin, max: n * COMPANY.pricePerSqmMax };
+    }
+    return null;
   }, [form.square_meters]);
 
   const handleChange = (field) => (e) => {
@@ -187,13 +189,14 @@ export default function Contact() {
 
               <div className="mt-10 bg-secondary text-secondary-foreground p-8 border-l-4 border-primary">
                 <div className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">
-                  Egységár
+                  Munkadíj
                 </div>
                 <div className="font-display text-3xl font-extrabold">
-                  {formatFt(COMPANY.pricePerSqm)} <span className="text-base text-zinc-400 font-medium">/ m²</span>
+                  2 500 – 4 000 Ft <span className="text-base text-zinc-400 font-medium">/ m²</span>
                 </div>
                 <p className="text-sm text-zinc-400 mt-3">
-                  Transzparens árazás, rejtett költségek nélkül.
+                  Részletes árlista a Szolgáltatások oldalon. Az árak
+                  tájékoztató jellegűek.
                 </p>
               </div>
             </div>
@@ -321,11 +324,11 @@ export default function Contact() {
                             {errors.square_meters}
                           </p>
                         )}
-                        {estimatedPrice > 0 && (
+                        {estimatedPrice && (
                           <p className="mt-3 text-sm text-muted-foreground" data-testid="form-estimated-price">
-                            Becsült ár:{" "}
+                            Becsült munkadíj tartomány:{" "}
                             <span className="font-display font-bold text-primary text-lg">
-                              {formatFt(estimatedPrice)}
+                              {formatFt(estimatedPrice.min)} – {formatFt(estimatedPrice.max)}
                             </span>
                           </p>
                         )}

@@ -22,7 +22,7 @@ const features = [
 
 const stats = [
   { value: "5×", label: "Gyorsabb mint a kézi" },
-  { value: "3500", label: "Ft/m²-től" },
+  { value: "2500", label: "Ft/m²-től" },
   { value: "100%", label: "Minőségi garancia" },
 ];
 
@@ -32,10 +32,10 @@ export default function Home() {
       {/* HERO */}
       <section className="relative overflow-hidden bg-[#18181B] text-white" data-testid="hero-section">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-40"
+          className="absolute inset-0 bg-cover bg-center opacity-35"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1614595737476-42487331b8a1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBidWlsZGluZyUyMGNvbmNyZXRlfGVufDB8fHx8MTc4MTc4Nzg0Mnww&ixlib=rb-4.1.0&q=85')",
+              "url('https://images.pexels.com/photos/5493665/pexels-photo-5493665.jpeg?auto=compress&cs=tinysrgb&w=1920')",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#18181B] via-[#18181B]/85 to-transparent" />
@@ -49,7 +49,7 @@ export default function Home() {
 
             <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[0.95]" data-testid="hero-title">
               Professzionális<br />
-              <span className="text-primary">gépi vakolás</span><br />
+              <span className="text-primary">cementes gépi vakolás</span><br />
               kivitelezés.
             </h1>
 
@@ -149,9 +149,10 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <img
-                src="https://images.pexels.com/photos/5493658/pexels-photo-5493658.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                alt="Gépi vakolás kivitelezés"
+                src="https://images.pexels.com/photos/10383588/pexels-photo-10383588.jpeg?auto=compress&cs=tinysrgb&w=940"
+                alt="Cementes gépi vakolás kivitelezés folyamatban"
                 className="w-full h-[500px] object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                loading="lazy"
                 data-testid="process-image"
               />
             </div>
@@ -193,10 +194,11 @@ export default function Home() {
                 rejtett költségek nélkül.
               </h2>
               <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
-                A gépi vakolás ára nálunk{" "}
-                <strong className="text-foreground">{formatFt(COMPANY.pricePerSqm)}</strong>{" "}
-                négyzetméterenként. Számolja ki a saját projektje teljes árát az
-                interaktív kalkulátorunkkal.
+                A cementes gépi vakolás munkadíja nálunk{" "}
+                <strong className="text-foreground">2 500 – 4 000 Ft/m²</strong>{" "}
+                között mozog. Számolja ki a saját projektje teljes árát a
+                részletes interaktív kalkulátorunkkal — kiegészítő munkákkal és
+                felárakkal együtt.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
@@ -223,16 +225,19 @@ export default function Home() {
                 <div className="absolute -top-10 -right-10 h-40 w-40 bg-primary/20 blur-3xl" />
                 <div className="relative">
                   <div className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">
-                    Gépi vakolás
+                    Cementes gépi vakolás
                   </div>
                   <div className="mt-6 flex items-baseline gap-2">
-                    <div className="font-display text-7xl lg:text-8xl font-extrabold text-primary leading-none">
-                      3500
+                    <div className="font-display text-6xl lg:text-7xl font-extrabold text-primary leading-none">
+                      2500
                     </div>
-                    <div className="font-display text-2xl text-white">Ft</div>
+                    <div className="font-display text-2xl text-zinc-400">–</div>
+                    <div className="font-display text-6xl lg:text-7xl font-extrabold text-primary leading-none">
+                      4000
+                    </div>
                   </div>
                   <div className="mt-3 text-zinc-400 text-sm uppercase tracking-widest">
-                    / négyzetméter
+                    Ft / m² · munkadíj
                   </div>
                   <div className="mt-10 pt-8 border-t border-zinc-800">
                     <div className="flex items-center gap-3 text-sm text-zinc-300">

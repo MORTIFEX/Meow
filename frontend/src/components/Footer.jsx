@@ -105,7 +105,7 @@ export default function Footer() {
             © {year} BENOTEK-BAU Kft. · Minden jog fenntartva
           </p>
           <p className="text-xs text-zinc-500 uppercase tracking-widest">
-            Gépi vakolás · {COMPANY.pricePerSqm} Ft/m²-től
+            Cementes gépi vakolás · 2 500 Ft/m²-től
           </p>
         </div>
       </div>
