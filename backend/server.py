@@ -11,6 +11,9 @@ from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
+from flask import Flask
+
+app = Flask(__name__)
 
 
 ROOT_DIR = Path(__file__).parent
