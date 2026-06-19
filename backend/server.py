@@ -346,24 +346,23 @@ async def submit_contact(payload: ContactSubmissionCreate):
         total_max=payload.total_max,
     )
 
-email_sent = await send_contact_email(submission)
-submission.email_sent = email_sent
+    email_sent = await send_contact_email(submission)
+    submission.email_sent = email_sent
 
-await send_customer_confirmation(submission)
+    await send_customer_confirmation(submission)
 
-doc = submission.model_dump()
-doc['created_at'] = doc['created_at'].isoformat()
+    doc = submission.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
 
-await db.contact_submissions.insert_one(doc)
+    await db.contact_submissions.insert_one(doc)
 
-if not email_sent:
-    raise HTTPException(
-        status_code=502,
-        detail="A beküldés mentve, de az e-mail küldés sikertelen volt..."
-    )
+    if not email_sent:
+        raise HTTPException(
+            status_code=502,
+            detail="A beküldés mentve, de az e-mail küldés sikertelen volt..."
+        )
 
     return submission
-
 
 @api_router.get("/contact/submissions", response_model=List[ContactSubmission])
 async def list_submissions(limit: int = 100):
