@@ -342,7 +342,9 @@ async def submit_contact(payload: ContactSubmissionCreate):
         total_min=payload.total_min,
         total_max=payload.total_max,
     )
-
+@api_router.post("/contact")
+async def submit_contact_legacy(payload: ContactSubmissionCreate):
+    return await submit_contact(payload)
     email_sent = await send_contact_email(submission)
     submission.email_sent = email_sent
 
