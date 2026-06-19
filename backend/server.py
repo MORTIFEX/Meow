@@ -39,7 +39,7 @@ collection = db["contacts"]
 # Resend setup
 resend.api_key = os.environ.get('RESEND_API_KEY')
 
-SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'info.benotekbau@gmail.com')
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'info@benotekbau.hu')
 CONTACT_RECIPIENT_EMAIL = os.environ.get('CONTACT_RECIPIENT_EMAIL')
 
 # Create a router with the /api prefix
