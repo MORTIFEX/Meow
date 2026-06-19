@@ -358,6 +358,10 @@ async def submit_contact(payload: ContactSubmissionCreate):
 
     return submission
 
+@api_router.post("/contact")
+async def submit_contact_legacy(payload: ContactSubmissionCreate):
+    return await submit_contact(payload)
+
 @api_router.get("/contact/submissions", response_model=List[ContactSubmission])
 async def list_submissions(limit: int = 100):
     docs = await db.contact_submissions.find({}, {"_id": 0}).sort("created_at", -1).to_list(limit)
@@ -365,10 +369,6 @@ async def list_submissions(limit: int = 100):
         if isinstance(d.get('created_at'), str):
             d['created_at'] = datetime.fromisoformat(d['created_at'])
     return docs
-    
-@api_router.post("/contact")
-async def submit_contact_legacy(payload: ContactSubmissionCreate):
-    return await submit_contact(payload)
 
 logger = logging.getLogger(__name__)
 app.include_router(api_router)
