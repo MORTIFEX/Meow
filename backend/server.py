@@ -26,17 +26,17 @@ from pymongo import MongoClient
 
 load_dotenv()
 
-MONGO_URI = os.getenv("mongodb+srv://eriktatar08_db_user:ie77AcCFzwxodtSH@cluster0.s8t3ibd.mongodb.net")
+MONGO_URI = os.getenv("MONGO_URI")
 
 client = MongoClient(MONGO_URI)   # 🔥 EZ HIÁNYZIK NÁLAD
 
-db = client["benotek"]          # adatbázis neve
+db = client["DB_NAME"]          # adatbázis neve
 collection = db["contacts"]           # példa collection
 # Resend setup
-resend.api_key = os.environ.get('re_KmDUVoJz_GrNqvDgfvhTXU2tzEGAc9sHH')
+resend.api_key = os.environ.get('RESEND_API_KEY')
 
 SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
-CONTACT_RECIPIENT_EMAIL = os.environ.get('info.benotekbau@gmail.com')
+CONTACT_RECIPIENT_EMAIL = os.environ.get('CONTACT_RECIPIENT_EMAIL')
 
 # Create the main app without a prefix
 app = FastAPI()
