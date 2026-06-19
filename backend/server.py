@@ -22,11 +22,12 @@ load_dotenv(ROOT_DIR / '.env')
 # MongoDB connection
 mongo_url = os.environ['mongodb+srv://eriktatar08_db_user:ie77AcCFzwxodtSH@cluster0.s8t3ibd.mongodb.net/?appName=Cluster0']
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['benotek']]
 
+db = client[os.environ['benotek']]
 # Resend setup
-resend.api_key = os.environ.get('re_KmDUVoJz_GrNqvDgfvhTXU2tzEGAc9sHH')
-SENDER_EMAIL = os.environ.get('onboarding@resend.dev')
+resend.api_key = os.environ.get('re_KmDUVoJz_GrNqvDgfvhTXU2tzEGAc9sHH'))
+
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
 CONTACT_RECIPIENT_EMAIL = os.environ.get('info.benotekbau@gmail.com')
 
 # Create the main app without a prefix
