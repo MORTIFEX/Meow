@@ -25,7 +25,7 @@ client = AsyncIOMotorClient(mongo_url)
 
 db = client[os.environ['benotek']]
 # Resend setup
-resend.api_key = os.environ.get('re_KmDUVoJz_GrNqvDgfvhTXU2tzEGAc9sHH'))
+resend.api_key = os.environ.get('re_KmDUVoJz_GrNqvDgfvhTXU2tzEGAc9sHH')
 
 SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
 CONTACT_RECIPIENT_EMAIL = os.environ.get('info.benotekbau@gmail.com')
