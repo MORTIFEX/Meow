@@ -18,6 +18,16 @@ app = Flask(__name__)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+from flask_cors import CORS
+
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://benotekbau.hu",
+            "https://www.benotekbau.hu"
+        ]
+    }
+})
 
 # MongoDB connection
 import os
