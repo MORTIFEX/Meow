@@ -330,32 +330,40 @@ async def get_config():
 
 @api_router.post("/contact", response_model=ContactSubmission)
 async def submit_contact(payload: ContactSubmissionCreate):
-    total = round(payload.square_meters * PRICE_PER_SQM, 2)
+
     submission = ContactSubmission(
         name=payload.name.strip(),
         phone=payload.phone.strip(),
         email=str(payload.email).strip(),
         square_meters=payload.square_meters,
         message=(payload.message or "").strip(),
-        total_price=total,
+        total_price=round(payload.square_meters * PRICE_PER_SQM, 2),
         services=payload.services or [],
         total_min=payload.total_min,
         total_max=payload.total_max,
     )
 
-    await send_customer_confirmation(submission)
+    email_sent = False
+    try:
+        email_sent = await send_contact_email(submission)
+    except Exception as e:
+        logger.error(f"Company email failed: {e}")
 
-    doc = submission.model_dump()
-    doc['created_at'] = doc['created_at'].isoformat()
+    submission.email_sent = email_sent
 
-    await db.contact_submissions.insert_one(doc)
+    try:
+        await send_customer_confirmation(submission)
+    except Exception as e:
+        logger.warning(f"Customer email failed: {e}")
 
-    if not email_sent:
-        raise HTTPException(
-            status_code=502,
-            detail="A beküldés mentve, de az e-mail küldés sikertelen volt..."
-        )
+    try:
+        doc = submission.model_dump()
+        doc["created_at"] = doc["created_at"].isoformat()
+        await db.contact_submissions.insert_one(doc)
+    except Exception as e:
+        logger.error(f"DB insert failed: {e}")
 
+    # 💥 FONTOS: mindig return
     return submission
 
 @api_router.get("/contact/submissions", response_model=List[ContactSubmission])
