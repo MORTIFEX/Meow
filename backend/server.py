@@ -358,10 +358,6 @@ async def submit_contact(payload: ContactSubmissionCreate):
 
     return submission
 
-@api_router.post("/contact")
-async def submit_contact_legacy(payload: ContactSubmissionCreate):
-    return await submit_contact(payload)
-
 @api_router.get("/contact/submissions", response_model=List[ContactSubmission])
 async def list_submissions(limit: int = 100):
     docs = await db.contact_submissions.find({}, {"_id": 0}).sort("created_at", -1).to_list(limit)
