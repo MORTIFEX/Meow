@@ -11,18 +11,21 @@ from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
-from flask import Flask
-from flask_cors import CORS
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-app = Flask(__name__)
+app = FastAPI()
 
-CORS(app, origins=[
-    "https://benotekbau.hu",
-    "https://www.benotekbau.hu"
-])
-
-app = Flask(__name__)
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://benotekbau.hu",
+        "https://www.benotekbau.hu"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
