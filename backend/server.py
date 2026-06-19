@@ -1,6 +1,4 @@
 from fastapi import FastAPI, APIRouter, HTTPException
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
@@ -11,7 +9,6 @@ from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
-from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -35,22 +32,18 @@ import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
-load_dotenv()
 
 MONGO_URI = os.getenv("MONGO_URI")
 
 client = MongoClient(MONGO_URI)   # 🔥 EZ HIÁNYZIK NÁLAD
 
-db = client["DB_NAME"]          # adatbázis neve
+db = client[os.getenv("DB_NAME")]          # adatbázis neve
 collection = db["contacts"]           # példa collection
 # Resend setup
 resend.api_key = os.environ.get('RESEND_API_KEY')
 
 SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
 CONTACT_RECIPIENT_EMAIL = os.environ.get('CONTACT_RECIPIENT_EMAIL')
-
-# Create the main app without a prefix
-app = FastAPI()
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
