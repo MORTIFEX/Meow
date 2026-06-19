@@ -37,7 +37,8 @@ MONGO_URI = os.getenv("MONGO_URI")
 
 client = MongoClient(MONGO_URI)   # 🔥 EZ HIÁNYZIK NÁLAD
 
-db = client[os.getenv("DB_NAME")]          # adatbázis neve
+db_name = os.getenv("DB_NAME", "benotek")
+db = client[db_name]         # adatbázis neve
 collection = db["contacts"]           # példa collection
 # Resend setup
 resend.api_key = os.environ.get('RESEND_API_KEY')
@@ -379,19 +380,12 @@ async def list_submissions(limit: int = 100):
 
 app.include_router(api_router)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+logger = logging.getLogger(__name__)
 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
-logger = logging.getLogger(__name__)
 
 
 @app.on_event("shutdown")
