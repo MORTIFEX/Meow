@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from fastapi import FastAPI, APIRouter, HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
@@ -29,7 +30,6 @@ load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
 import os
-from dotenv import load_dotenv
 from pymongo import MongoClient
 
 
