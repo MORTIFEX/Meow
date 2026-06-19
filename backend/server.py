@@ -342,11 +342,6 @@ async def submit_contact(payload: ContactSubmissionCreate):
         total_min=payload.total_min,
         total_max=payload.total_max,
     )
-@api_router.post("/contact")
-async def submit_contact_legacy(payload: ContactSubmissionCreate):
-    return await submit_contact(payload)
-    email_sent = await send_contact_email(submission)
-    submission.email_sent = email_sent
 
     await send_customer_confirmation(submission)
 
@@ -370,7 +365,10 @@ async def list_submissions(limit: int = 100):
         if isinstance(d.get('created_at'), str):
             d['created_at'] = datetime.fromisoformat(d['created_at'])
     return docs
-
+    
+@api_router.post("/contact")
+async def submit_contact_legacy(payload: ContactSubmissionCreate):
+    return await submit_contact(payload)
 
 logger = logging.getLogger(__name__)
 app.include_router(api_router)
