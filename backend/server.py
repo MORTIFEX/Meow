@@ -20,7 +20,7 @@ app.add_middleware(
         "https://benotekbau.hu",
         "https://www.benotekbau.hu"
     ],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -29,17 +29,13 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
-import os
-from pymongo import MongoClient
-
-
 MONGO_URI = os.getenv("MONGO_URI")
-
-client = MongoClient(MONGO_URI)   # 🔥 EZ HIÁNYZIK NÁLAD
-
 db_name = os.getenv("DB_NAME", "benotek")
-db = client[db_name]         # adatbázis neve
-collection = db["contacts"]           # példa collection
+
+client = AsyncIOMotorClient(MONGO_URI)
+db = client[db_name]
+collection = db["contacts"]
+
 # Resend setup
 resend.api_key = os.environ.get('RESEND_API_KEY')
 
@@ -350,21 +346,21 @@ async def submit_contact(payload: ContactSubmissionCreate):
         total_max=payload.total_max,
     )
 
-    email_sent = await send_contact_email(submission)
-    submission.email_sent = email_sent
+email_sent = await send_contact_email(submission)
+submission.email_sent = email_sent
 
-    # Send auto-confirmation to the customer (best-effort, won't fail the request)
-    await send_customer_confirmation(submission)
+await send_customer_confirmation(submission)
 
-    doc = submission.model_dump()
-    doc['created_at'] = doc['created_at'].isoformat()
-    await db.contact_submissions.insert_one(doc)
+doc = submission.model_dump()
+doc['created_at'] = doc['created_at'].isoformat()
 
-    if not email_sent:
-        raise HTTPException(
-            status_code=502,
-            detail="A beküldés mentve, de az e-mail küldés sikertelen volt. Kérjük, próbálja újra később vagy hívjon minket telefonon."
-        )
+await db.contact_submissions.insert_one(doc)
+
+if not email_sent:
+    raise HTTPException(
+        status_code=502,
+        detail="A beküldés mentve, de az e-mail küldés sikertelen volt..."
+    )
 
     return submission
 
@@ -378,9 +374,8 @@ async def list_submissions(limit: int = 100):
     return docs
 
 
-app.include_router(api_router)
-
 logger = logging.getLogger(__name__)
+app.include_router(api_router)
 
 logging.basicConfig(
     level=logging.INFO,
