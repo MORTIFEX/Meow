@@ -20,8 +20,12 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
-mongo_url = os.environ['mongodb+srv://eriktatar08_db_user:ie77AcCFzwxodtSH@cluster0.s8t3ibd.mongodb.net/?appName=Cluster0']
-client = AsyncIOMotorClient(mongo_url)
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+mongo_uri = os.getenv("mongodb+srv://eriktatar08_db_user:ie77AcCFzwxodtSH@cluster0.s8t3ibd.mongodb.net")
 
 db = client[os.environ['benotek']]
 # Resend setup
