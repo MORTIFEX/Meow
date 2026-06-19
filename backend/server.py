@@ -22,12 +22,16 @@ load_dotenv(ROOT_DIR / '.env')
 # MongoDB connection
 import os
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 load_dotenv()
 
-mongo_uri = os.getenv("mongodb+srv://eriktatar08_db_user:ie77AcCFzwxodtSH@cluster0.s8t3ibd.mongodb.net")
+MONGO_URI = os.getenv("mongodb+srv://eriktatar08_db_user:ie77AcCFzwxodtSH@cluster0.s8t3ibd.mongodb.net")
 
-db = client[os.environ['benotek']]
+client = MongoClient(MONGO_URI)   # 🔥 EZ HIÁNYZIK NÁLAD
+
+db = client["benotek"]          # adatbázis neve
+collection = db["contacts"]           # példa collection
 # Resend setup
 resend.api_key = os.environ.get('re_KmDUVoJz_GrNqvDgfvhTXU2tzEGAc9sHH')
 
