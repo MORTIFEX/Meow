@@ -180,6 +180,7 @@ export const SERVICES = [
     id: "gepkiszallas",
     name: "Gép kiszállás",
     type: "fixed",
+    defaultChecked: true,
     min: 50000,
     max: 150000,
     description: "Egyszeri tétel projektenként",
