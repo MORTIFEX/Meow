@@ -22,7 +22,7 @@ export const SERVICES = [
   },
   {
     id: "mennyezet",
-    name: "Mennyezet vakol'sa",
+    name: "Mennyezet vakolása",
     type: "rate",
     unit: "m²",
     min: 2800,
